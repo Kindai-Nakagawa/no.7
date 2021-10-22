@@ -1,39 +1,34 @@
 class TweetsController < ApplicationController
   def index
-    @tweet = Tweet.all 
+   @tweets = Tweet.all #SELECT * FROM TWEET;
   end
   def new
-    @tweet = Tweet.new
+   @tweet = Tweet.new
   end
   def create
-    @tweet = Tweet.new(message: params[:tweet][:message], tdate: Time.current)
+   logger.debug "-------" + params[:tweet][:message] + "---------"
+   @tweet = Tweet.new(message: params[:tweet][:message], tdate: Time.current)
     if @tweet.save
-      flash[:notice] = '1レコード追加しました'
-      redirect_to root_path
+     flash[:notice] = ''
+     redirect_to '/'
     else
-      render 'new'
+     render 'new'
     end
   end
   def show
-    @tweet = Tweet.find(params[:id])
+   @tweet = Tweet.find(params[:id])
   end
   def destroy
-    tweet = Tweet.find(params[:id])
-    if tweet.destroy
-      flash[:notice] = '1レコード追加しました'
-    end
-    redirect_to root_path
+   tweet = Tweet.find(params[:id])
+   tweet.destroy
+   redirect_to '/'
   end
   def edit
     @tweet = Tweet.find(params[:id])
   end
   def update
-    @tweet = Tweet.find(params[:id])
-    if @tweet.update(message: params[:tweet][:message])
-      flash[:notice] = '1レコード更新しました'
-      redirect_to root_path
-    else
-      render 'edit'
-    end
+    tweet = Tweet.find(params[:id])
+    tweet.update(message: params[:tweet][:message])
+    redirect_to '/'
   end
 end
